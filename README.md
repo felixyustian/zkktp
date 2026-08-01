@@ -44,15 +44,15 @@ sequenceDiagram
     participant IS as Issuer (attestation signer)
     participant SC as Soulbound Contract
 
-    U->>FE: Connect wallet + upload KTP & selfie
+    U->>FE: Connect wallet + upload KTP and selfie
     FE->>GW: POST /verify (image payload, wallet addr)
     GW->>CV: OCR + quality gate + liveness + face match
-    CV-->>GW: {decision, NIK commitment} (approve / escalate)
+    CV-->>GW: decision + NIK commitment (approve or escalate)
     GW->>IS: request attestation (approved only)
-    IS-->>IS: nullifier = H(NIK); destroy raw docs
-    IS-->>FE: EIP-712 signed attestation {subject, nullifier, expiry}
+    IS-->>IS: nullifier = H(NIK), wipe raw docs
+    IS-->>FE: EIP-712 signed attestation (subject, nullifier, expiry)
     FE->>SC: mint(attestation, signature)
-    SC-->>SC: verify issuer sig · check nullifier unused · enforce soulbound
+    SC-->>SC: verify issuer sig, check nullifier unused, enforce soulbound
     SC-->>U: Soulbound credential minted
     Note over SC: dApps call isVerified(addr) to gate access
 ```
