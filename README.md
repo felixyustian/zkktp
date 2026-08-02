@@ -15,8 +15,8 @@
 
 The on-chain credential layer is deployed, verified, and minting — not a mock.
 
-- **Contract (verified):** [`0xAED6894cd859dEd2Df83be9D96B8EcC7945D3b2F`](https://sepolia-blockscout.lisk.com/address/0xaed6894cd859ded2df83be9d96b8ecc7945d3b2f)
-- **First credential:** [soulbound token #1](https://sepolia-blockscout.lisk.com/tx/0x09caddf673103b3b58cd8f0cabc3dc07d8b18d5a63566b488b7a94f842bc2a8d) — minted, non-transferable, `isVerified` returns `true`
+- **Contract (verified):** [`0xe15BcdB80cf2ba96fDAf43b69f18Eb1f586a8b4d`](https://sepolia-blockscout.lisk.com/address/0xe15bcdb80cf2ba96fdaf43b69f18eb1f586a8b4d)
+- **First credential:** [soulbound token #1](https://sepolia-blockscout.lisk.com/tx/0xe863C118E1E329DF4F68cC6560F4dC11D0951A2f) — minted, non-transferable, `isVerified` returns `true`
 - **Trusted issuer:** `0x2f4c…F54C`
 - **Live app:** [zkktp-app.vercel.app](https://zkktp-app.vercel.app) — connect a wallet, mint your credential
 - **Contracts:** ERC-5192 soulbound + EIP-712 attestation · 12/12 tests passing
@@ -125,7 +125,7 @@ Honest state — the off-chain verification engine is production-grade, and the 
 | `ZkKTPSoulbound` contract (ERC-5192)             | ✅ Deployed & verified on Lisk Sepolia                                                       |
 | Contract test suite                              | ✅ 12/12 passing (Foundry)                                                                   |
 | Nullifier + EIP-712 issuer signing               | ✅ Working (issuer service + `/api/attest`)                                                  |
-| First on-chain mint                              | ✅ [Token #1 minted](https://sepolia-blockscout.lisk.com/tx/0x09caddf673103b3b58cd8f0cabc3dc07d8b18d5a63566b488b7a94f842bc2a8d) |
+| First on-chain mint                              | ✅ [Token #1 minted](https://sepolia-blockscout.lisk.com/tx/0xe863C118E1E329DF4F68cC6560F4dC11D0951A2f) |
 | Wallet-connect frontend + mint flow              | ✅ Working — [live app](https://zkktp-app.vercel.app)                                        |
 | Live KTP → issuer pipeline link (real verification, not demo) | 🔨 In progress — issuer currently signs on request                             |
 | ZK membership circuit (unlink wallet ↔ identity) | 🎯 Stretch                                                                                   |
