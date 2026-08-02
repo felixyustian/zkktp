@@ -9,3 +9,6 @@ node_modules/
 
 zkktp-app/node_modules/
 zkktp-app/.env.local
+
+zkktp-app/.env.local
+zkktp-app/.next/
