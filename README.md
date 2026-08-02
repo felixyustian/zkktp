@@ -4,10 +4,22 @@
 
 > Verify off-chain. Mint a soulbound credential. No KTP, NIK, or biometric ever touches the chain — zero-knowledge issuance is the roadmap.
 
-![Status](https://img.shields.io/badge/status-MVP%20in%20progress-yellow)
+![Status](https://img.shields.io/badge/status-live%20on%20testnet-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Chain](https://img.shields.io/badge/chain-Lisk%20Sepolia%20testnet-6f4cff)
 ![Built for](https://img.shields.io/badge/built%20for-Coinfest%20Asia%20Vibe%20Coding-black)
+
+---
+
+## Live on Lisk Sepolia
+
+The on-chain credential layer is deployed, verified, and minting — not a mock.
+
+- **Contract (verified):** [`0xAED6894cd859dEd2Df83be9D96B8EcC7945D3b2F`](https://sepolia-blockscout.lisk.com/address/0xaed6894cd859ded2df83be9d96b8ecc7945d3b2f)
+- **First credential:** [soulbound token #1](https://sepolia-blockscout.lisk.com/tx/0x09caddf673103b3b58cd8f0cabc3dc07d8b18d5a63566b488b7a94f842bc2a8d) — minted, non-transferable, `isVerified` returns `true`
+- **Trusted issuer:** `0x2f4c…F54C`
+- **Live app:** [zkktp-app.vercel.app](https://zkktp-app.vercel.app) — connect a wallet, mint your credential
+- **Contracts:** ERC-5192 soulbound + EIP-712 attestation · 12/12 tests passing
 
 ---
 
@@ -89,39 +101,42 @@ Full technical design, including the zero-knowledge upgrade path, is in **[ARCHI
 
 ## Tech stack
 
-| Layer | Stack |
-|---|---|
-| Frontend | React · wagmi / viem · wallet connect |
-| API Gateway | Go 1.22 · JWT auth · rate limiting |
+| Layer        | Stack                                                                |
+| ------------ | -------------------------------------------------------------------- |
+| Frontend     | Next.js · wagmi / viem · wallet connect                              |
+| API Gateway  | Go 1.22 · JWT auth · rate limiting                                   |
 | Verification | Python 3.11 · FastAPI · OpenCV · Tesseract OCR · YOLO face detection |
-| Issuer | EIP-712 typed-data signing · nullifier derivation |
-| Contracts | Solidity 0.8.24 · OpenZeppelin · ERC-5192 soulbound · Foundry |
-| Chain | Lisk Sepolia testnet (strong Indonesian Web3 footprint) |
-| ZK (stretch) | Semaphore-style Merkle membership + nullifier circuit |
+| Issuer       | EIP-712 typed-data signing · nullifier derivation                    |
+| Contracts    | Solidity 0.8.24 · OpenZeppelin · ERC-5192 soulbound · Foundry        |
+| Chain        | Lisk Sepolia testnet (strong Indonesian Web3 footprint)              |
+| ZK (stretch) | Semaphore-style Merkle membership + nullifier circuit                |
 
 ## Project status
 
-Honest state — the off-chain verification engine is production-grade and running; the on-chain layer is this sprint's build scope.
+Honest state — the off-chain verification engine is production-grade, and the on-chain credential layer is now deployed, verified, and minting on Lisk Sepolia. The one piece still open is wiring the real KTP pipeline to the issuer signature (see the last row).
 
-| Component | Status |
-|---|---|
-| Go API gateway (auth, rate-limit, orchestration) | ✅ Working |
-| KTP OCR + NIK/field extraction & validation | ✅ Working |
-| Image-quality gate | ✅ Working |
-| Face detection + liveness / selfie match | ✅ Working |
-| Calibrated approve / escalate confidence gate | ✅ Working |
-| Test coverage (Pytest + Go test) + CI/CD | ✅ Working |
-| Nullifier derivation + EIP-712 issuer signing | 🔨 In progress |
-| `ZkKTPSoulbound` contract (ERC-5192) | 🔨 In progress — [contract here](./contracts/ZkKTPSoulbound.sol) |
-| Wallet-connect frontend + mint flow | 🔨 In progress |
-| ZK membership circuit (unlink wallet ↔ identity) | 🎯 Stretch |
+| Component                                        | Status                                                                                      |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| Go API gateway (auth, rate-limit, orchestration) | ✅ Working                                                                                   |
+| KTP OCR + NIK/field extraction & validation      | ✅ Working                                                                                   |
+| Image-quality gate                               | ✅ Working                                                                                   |
+| Face detection + liveness / selfie match         | ✅ Working                                                                                   |
+| Calibrated approve / escalate confidence gate    | ✅ Working                                                                                   |
+| `ZkKTPSoulbound` contract (ERC-5192)             | ✅ Deployed & verified on Lisk Sepolia                                                       |
+| Contract test suite                              | ✅ 12/12 passing (Foundry)                                                                   |
+| Nullifier + EIP-712 issuer signing               | ✅ Working (issuer service + `/api/attest`)                                                  |
+| First on-chain mint                              | ✅ [Token #1 minted](https://sepolia-blockscout.lisk.com/tx/0x09caddf673103b3b58cd8f0cabc3dc07d8b18d5a63566b488b7a94f842bc2a8d) |
+| Wallet-connect frontend + mint flow              | ✅ Working — [live app](https://zkktp-app.vercel.app)                                        |
+| Live KTP → issuer pipeline link (real verification, not demo) | 🔨 In progress — issuer currently signs on request                             |
+| ZK membership circuit (unlink wallet ↔ identity) | 🎯 Stretch                                                                                   |
 
 The off-chain half is forked from a prior production KYC pipeline. This project's contribution is the **on-chain credential layer** and the **PII-discard attestation bridge** that makes it Web3-native.
 
 ## Sprint roadmap
 
-- **MVP (must-ship):** EIP-712 attestation → soulbound mint → `isVerified` read, live on Lisk Sepolia, demoed end-to-end.
-- **Differentiator (if time):** replace direct attestation with a Semaphore-style zk membership proof so the issuer cannot link a wallet to an identity even at mint time.
+- **MVP (shipped):** EIP-712 attestation → soulbound mint → `isVerified` read, live and verified on Lisk Sepolia, demoable end-to-end via the web app.
+- **Next:** wire the live KTP OCR + liveness pipeline to the issuer signature so verification is real, not simulated.
+- **Differentiator:** replace direct attestation with a Semaphore-style zk membership proof so the issuer cannot link a wallet to an identity even at mint time.
 
 ## Repository structure
 
@@ -129,14 +144,19 @@ The off-chain half is forked from a prior production KYC pipeline. This project'
 zkktp/
 ├── README.md
 ├── ARCHITECTURE.md
+├── foundry.toml
 ├── contracts/
 │   └── ZkKTPSoulbound.sol      # ERC-5192 soulbound credential + attestation verification
+├── test/
+│   └── ZkKTPSoulbound.t.sol    # 12-test Foundry suite
+├── script/
+│   ├── Deploy.s.sol            # deploy with trusted issuer
+│   └── Mint.s.sol              # issuer-signed mint
 ├── services/
-│   ├── gateway/                # Go API gateway (forked)
-│   ├── verification/           # Python CV service (forked)
-│   └── issuer/                 # nullifier + EIP-712 signer (new)
+│   └── issuer/                 # nullifier + EIP-712 signer (Node/viem)
+├── zkktp-app/                  # Next.js wallet-connect + mint frontend
 ├── circuits/                   # zk membership proof (stretch)
-└── frontend/                   # wallet connect + mint flow (new)
+└── frontend/                   # (superseded by zkktp-app)
 ```
 
 ## License

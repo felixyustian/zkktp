@@ -6,3 +6,6 @@ out/
 cache/
 broadcast/
 node_modules/
+
+zkktp-app/node_modules/
+zkktp-app/.env.local
